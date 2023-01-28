@@ -6,9 +6,4 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
-    database: mysql
-
-server:
-  servlet:
-    encoding:
-      charset: UTF-8
+    database: mariadb
