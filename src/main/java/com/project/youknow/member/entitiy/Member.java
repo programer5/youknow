@@ -1,5 +1,7 @@
 package com.project.youknow.member.entitiy;
 
+import com.project.youknow.member.enumType.MemberStatus;
+
 import javax.persistence.*;
 
 @Entity
@@ -19,5 +21,6 @@ public class Member {
     @Column(nullable = false, length = 100)
     private String password;
 
+    private MemberStatus memberStatus;
 
 }
