@@ -1,11 +1,12 @@
 package com.project.youknow.member.entitiy;
 
+import com.project.youknow.common.time.DateEntity;
 import com.project.youknow.member.enumType.MemberStatus;
 
 import javax.persistence.*;
 
 @Entity
-public class Member {
+public class Member extends DateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

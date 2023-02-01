@@ -1,6 +1,6 @@
 package com.project.youknow.member.enumType;
 
-import com.project.youknow.common.CodeValue;
+import com.project.youknow.common.codevalue.CodeValue;
 
 public enum MemberStatus implements CodeValue {
     ACTIVATE("ACTIVATE", "활성화"),

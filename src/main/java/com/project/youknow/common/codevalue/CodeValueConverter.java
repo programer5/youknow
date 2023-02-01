@@ -1,4 +1,4 @@
-package com.project.youknow.common;
+package com.project.youknow.common.codevalue;
 
 import javax.persistence.AttributeConverter;
 import java.util.EnumSet;
