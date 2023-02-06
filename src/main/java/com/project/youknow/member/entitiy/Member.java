@@ -2,10 +2,17 @@ package com.project.youknow.member.entitiy;
 
 import com.project.youknow.common.time.DateEntity;
 import com.project.youknow.member.enumType.MemberStatus;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+
 @Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member extends DateEntity {
 
     @Id
