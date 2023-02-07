@@ -8,7 +8,7 @@ public class CodeValueConverter<E extends Enum<E> & CodeValue> implements Attrib
 
     private Class<E> clz;
 
-    public CodeValueConverter(Class<E> enumClass) {
+    protected CodeValueConverter(Class<E> enumClass) {
         this.clz = enumClass;
     }
 

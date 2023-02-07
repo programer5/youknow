@@ -4,7 +4,6 @@ import com.project.youknow.common.codevalue.CodeValue;
 
 import javax.persistence.Converter;
 
-@Converter(autoApply = true)
 public enum MemberStatus implements CodeValue {
     ACTIVATE("ACTIVATE", "활성화"),
     DORMANCY("DORMANCY", "휴면"),
