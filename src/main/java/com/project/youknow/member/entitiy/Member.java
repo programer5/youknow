@@ -1,6 +1,7 @@
 package com.project.youknow.member.entitiy;
 
 import com.project.youknow.common.time.DateEntity;
+import com.project.youknow.member.enumType.MemberRole;
 import com.project.youknow.member.enumType.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,5 +31,7 @@ public class Member extends DateEntity {
     private String password;
 
     private MemberStatus memberStatus;
+
+    private MemberRole memberRole;
 
 }
