@@ -1,17 +1,21 @@
 package com.project.youknow.security;
 
+import com.project.youknow.jwt.JwtAccessDeniedHandler;
 import com.project.youknow.jwt.JwtAuthProvider;
+import com.project.youknow.member.enumType.MemberRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
@@ -52,7 +56,21 @@ public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .httpBasic().disable()
                 .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .antMatchers("/signup").permitAll()
+                .antMatchers("/signin/**").permitAll()
+                .antMatchers("/exception/**").permitAll()
+                .anyRequest().hasAnyRole(MemberRole.MEMBER.getCode())
+                .and()
+                .cors()
+                .and()
+                .exceptionHandling().accessDeniedHandler(new JwtAccessDeniedHandler())
+                .and()
     }
 
 }
