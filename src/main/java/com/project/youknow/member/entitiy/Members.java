@@ -3,9 +3,7 @@ package com.project.youknow.member.entitiy;
 import com.project.youknow.common.time.DateEntity;
 import com.project.youknow.member.enumType.MemberRole;
 import com.project.youknow.member.enumType.MemberStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member extends DateEntity {
+public class Members extends DateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +28,16 @@ public class Member extends DateEntity {
     @Column(nullable = false, length = 100)
     private String password;
 
+    @Column(nullable = false, length = 50)
+    private String mobileNumber;
+
     private MemberStatus memberStatus;
 
     private MemberRole memberRole;
+
+    public Members(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
 }

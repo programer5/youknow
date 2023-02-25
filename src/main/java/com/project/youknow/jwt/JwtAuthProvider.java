@@ -1,13 +1,11 @@
 package com.project.youknow.jwt;
 
-import com.project.youknow.member.entitiy.Member;
 import com.project.youknow.security.CustomUserDetails;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
@@ -34,19 +32,21 @@ public class JwtAuthProvider {
      * @throws Exception
      * @method 설명: jwt 토큰 발급
      */
-    public String createToken(Member member) {
+    public String createToken(long memberId, String email) {
         /**
          * 토큰 발급을 위한 데이터는 UserDetails에서 담당
          * 따라서 UserDetails를 세부 구현한 CustomUserDetails로 회원정보 전달
          */
-        CustomUserDetails user = new CustomUserDetails(member);
+        CustomUserDetails user = new CustomUserDetails(memberId, email);
 
         // 유효기간 설정을 위한 Date 객체 선언
         Date date = new Date();
         final JwtBuilder builder = Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setSubject("accesstoken").setExpiration(new Date(date.getTime() * (1000L * 60 * 60 * 12)))
-                .claim("member", member)
+                .claim("memberId", memberId)
+                .claim("email", email)
+                .claim("roles", user.getAuthorities())
                 .signWith(SignatureAlgorithm.HS256, atSecretKey);
 
         return builder.compact();
@@ -67,9 +67,10 @@ public class JwtAuthProvider {
         // 토큰 기반으로 유저의 정보 파싱
         Claims claims = Jwts.parserBuilder().setSigningKey(atSecretKey).build().parseClaimsJws(token).getBody();
 
-        Member member = claims.get("member", Member.class);
+        long memberId = claims.get("memberId", Integer.class);
+        String email = claims.get("email", String.class);
 
-        CustomUserDetails userDetails = new CustomUserDetails(member);
+        CustomUserDetails userDetails = new CustomUserDetails(memberId, email);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
