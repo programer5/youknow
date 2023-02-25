@@ -6,9 +6,25 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
+    generate-ddl: true
     database: mysql
     hibernate:
       ddl-auto: create
     show-sql: true
     properties:
       hibernate.format_sql: true
+    open-in-view: true
+
+## logging
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql: trace
+
+jwt:
+  secret:
+    signature: "youknow"

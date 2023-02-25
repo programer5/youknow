@@ -1,9 +1,6 @@
 package com.project.youknow.security;
 
-import com.project.youknow.jwt.JwtAccessDeniedHandler;
-import com.project.youknow.jwt.JwtAuthProvider;
-import com.project.youknow.jwt.JwtAuthenticationEntryPoint;
-import com.project.youknow.jwt.JwtAuthenticationFilter;
+import com.project.youknow.jwt.*;
 import com.project.youknow.member.enumType.MemberRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +24,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SpringSecurityConfig {
 
     private final JwtAuthProvider jwtAuthProvider;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -57,8 +56,8 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    public void filterChain(HttpSecurity http) throws Exception {
-        http
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -72,11 +71,12 @@ public class SpringSecurityConfig {
                 .and()
                 .cors()
                 .and()
-                .exceptionHandling().accessDeniedHandler(new JwtAccessDeniedHandler())
+                .exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
                 .and()
-                .exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtAuthProvider), UsernamePasswordAuthenticationFilter.class);
+                .apply(new JwtSecurityConfig(jwtAuthProvider))
+                .and().build();
     }
 
 }

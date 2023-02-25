@@ -39,13 +39,4 @@ public class Member extends DateEntity {
         this.email = email;
         this.password = password;
     }
-
-    public Member(long id, String email, String password, String mobileNumber, MemberStatus status, MemberRole role) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.mobileNumber = mobileNumber;
-        this.memberStatus = status;
-        this.memberRole = role;
-    }
 }

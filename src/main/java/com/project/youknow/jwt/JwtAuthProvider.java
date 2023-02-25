@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -18,15 +17,13 @@ import java.util.Date;
 @Component
 public class JwtAuthProvider {
 
-    @Value("${spring.jwt.secret.at}")
+    @Value("${jwt.secret.signature}")
     private String atSecretKey;
 
     @PostConstruct
     protected void init() {
         atSecretKey = Base64.getEncoder().encodeToString(atSecretKey.getBytes());
     }
-
-    private final UserDetailsService userDetailsService;
 
     /**
      * @throws Exception
