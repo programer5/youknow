@@ -1,9 +1,9 @@
 package com.project.youknow.login.service;
 
 import com.project.youknow.login.dto.LoginDto;
-import com.project.youknow.member.MemberRepository;
+import com.project.youknow.member.MembersRepository;
 import com.project.youknow.member.dto.AuthenticationDto;
-import com.project.youknow.member.entitiy.Members;
+import com.project.youknow.member.entitiy.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,13 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LoginService {
 
-    private final MemberRepository memberRepository;
+    private final MembersRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
     public AuthenticationDto login(LoginDto loginDto) {
-        Members loginEntity = loginDto.toEntity();
+        Member loginEntity = loginDto.toEntity();
 
-        Members member = memberRepository.findByEmail(loginEntity.getEmail())
+        Member member = memberRepository.findByEmail(loginEntity.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Member Not Found"));
 
         if (!passwordEncoder.matches(loginEntity.getPassword(), member.getPassword())) {

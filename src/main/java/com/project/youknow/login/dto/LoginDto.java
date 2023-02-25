@@ -1,6 +1,6 @@
 package com.project.youknow.login.dto;
 
-import com.project.youknow.member.entitiy.Members;
+import com.project.youknow.member.entitiy.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,7 @@ public class LoginDto {
     @NotBlank(message = "'password' is a required input value")
     private String password;
 
-    public Members toEntity() {
-        return new Members(email, password);
+    public Member toEntity() {
+        return new Member(email, password);
     }
 }

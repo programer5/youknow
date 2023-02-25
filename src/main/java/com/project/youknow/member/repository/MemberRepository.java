@@ -1,7 +1,9 @@
 package com.project.youknow.member.repository;
 
-import com.project.youknow.member.entitiy.Members;
+import com.project.youknow.member.entitiy.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface MemberRepository extends JpaRepository<Members, Long> {
+@Repository
+public interface MemberRepository extends JpaRepository<Member, Long> {
 }

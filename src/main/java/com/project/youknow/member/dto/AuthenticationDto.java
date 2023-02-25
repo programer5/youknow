@@ -1,6 +1,6 @@
 package com.project.youknow.member.dto;
 
-import com.project.youknow.member.entitiy.Members;
+import com.project.youknow.member.entitiy.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ public class AuthenticationDto {
     private String createDate;
     private String updatedDate;
 
-    public AuthenticationDto toDto(Members member) {
+    public AuthenticationDto toDto(Member member) {
         id = member.getId();
         email = member.getEmail();
         name = member.getName();

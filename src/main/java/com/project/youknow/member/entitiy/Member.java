@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Members extends DateEntity {
+public class Member extends DateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,9 +35,17 @@ public class Members extends DateEntity {
 
     private MemberRole memberRole;
 
-    public Members(String email, String password) {
+    public Member(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
+    public Member(long id, String email, String password, String mobileNumber, MemberStatus status, MemberRole role) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.mobileNumber = mobileNumber;
+        this.memberStatus = status;
+        this.memberRole = role;
+    }
 }
