@@ -1,6 +1,6 @@
-package com.project.youknow.member.dto;
+package com.project.youknow.api.member.dto;
 
-import com.project.youknow.member.entitiy.Member;
+import com.project.youknow.api.member.entitiy.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

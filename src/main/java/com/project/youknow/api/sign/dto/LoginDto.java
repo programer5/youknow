@@ -1,6 +1,6 @@
-package com.project.youknow.login.dto;
+package com.project.youknow.api.sign.dto;
 
-import com.project.youknow.member.entitiy.Member;
+import com.project.youknow.api.member.entitiy.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +21,9 @@ public class LoginDto {
     private String password;
 
     public Member toEntity() {
-        return new Member(email, password);
+        return Member.builder()
+                .email(email)
+                .password(password)
+                .build();
     }
 }

@@ -1,6 +1,6 @@
 package com.project.youknow.security;
 
-import com.project.youknow.member.enumType.MemberRole;
+import com.project.youknow.api.member.enumType.MemberRole;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

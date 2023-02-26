@@ -1,8 +1,8 @@
-package com.project.youknow.member.entitiy;
+package com.project.youknow.api.member.entitiy;
 
+import com.project.youknow.api.member.enumType.MemberRole;
+import com.project.youknow.api.member.enumType.MemberStatus;
 import com.project.youknow.common.time.DateEntity;
-import com.project.youknow.member.enumType.MemberRole;
-import com.project.youknow.member.enumType.MemberStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,8 +35,11 @@ public class Member extends DateEntity {
 
     private MemberRole memberRole;
 
-    public Member(String email, String password) {
+    @Builder
+    public Member(String email, String name, String password, String mobileNumber) {
         this.email = email;
+        this.name = name;
         this.password = password;
+        this.mobileNumber = mobileNumber;
     }
 }

@@ -1,4 +1,4 @@
-package com.project.youknow.member.enumType;
+package com.project.youknow.api.member.enumType;
 
 import com.project.youknow.common.codevalue.CodeValueConverter;
 
