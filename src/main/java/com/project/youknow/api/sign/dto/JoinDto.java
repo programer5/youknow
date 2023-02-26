@@ -16,6 +16,7 @@ public class JoinDto {
     private String email;
     private String password;
     private String name;
+    private String nickname;
     private String mobileNumber;
 
     public Member toEntity() {
@@ -23,6 +24,7 @@ public class JoinDto {
                 .email(email)
                 .password(password)
                 .name(name)
+                .nickname(nickname)
                 .mobileNumber(mobileNumber)
                 .memberStatus(MemberStatus.ACTIVATE)
                 .memberRole(MemberRole.MEMBER)

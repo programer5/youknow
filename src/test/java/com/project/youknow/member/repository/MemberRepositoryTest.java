@@ -30,7 +30,7 @@ class MemberRepositoryTest {
     @DisplayName("회원 생성")
     @Rollback(false)
     void siginup() {
-        JoinDto joinInfo = new JoinDto("neverdie4757@gmail.com", "a1s2d3A!S@", "정민서", "01064495767");
+        JoinDto joinInfo = new JoinDto("neverdie4757@gmail.com", "a1s2d3A!S@", "정민서", "MJ","01064495767");
         Boolean join = signService.join(joinInfo);
 
         Assertions.assertEquals(true, join);

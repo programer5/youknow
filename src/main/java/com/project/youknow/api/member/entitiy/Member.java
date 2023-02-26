@@ -25,6 +25,9 @@ public class Member extends DateEntity {
     @Column(nullable = false, length = 50)
     private String name;
 
+    @Column(nullable = false, length = 200)
+    private String nickname;
+
     @Column(nullable = false, length = 100)
     private String password;
 
@@ -36,9 +39,10 @@ public class Member extends DateEntity {
     private MemberRole memberRole;
 
     @Builder
-    public Member(String email, String name, String password, String mobileNumber, MemberStatus memberStatus, MemberRole memberRole) {
+    public Member(String email, String name, String nickname, String password, String mobileNumber, MemberStatus memberStatus, MemberRole memberRole) {
         this.email = email;
         this.name = name;
+        this.nickname = nickname;
         this.password = password;
         this.mobileNumber = mobileNumber;
         this.memberStatus = memberStatus;
