@@ -1,6 +1,8 @@
 package com.project.youknow.api.sign.dto;
 
 import com.project.youknow.api.member.entitiy.Member;
+import com.project.youknow.api.member.enumType.MemberRole;
+import com.project.youknow.api.member.enumType.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,8 @@ public class JoinDto {
                 .password(password)
                 .name(name)
                 .mobileNumber(mobileNumber)
+                .memberStatus(MemberStatus.ACTIVATE)
+                .memberRole(MemberRole.MEMBER)
                 .build();
     }
 

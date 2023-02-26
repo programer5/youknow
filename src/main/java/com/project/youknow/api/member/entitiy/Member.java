@@ -36,10 +36,12 @@ public class Member extends DateEntity {
     private MemberRole memberRole;
 
     @Builder
-    public Member(String email, String name, String password, String mobileNumber) {
+    public Member(String email, String name, String password, String mobileNumber, MemberStatus memberStatus, MemberRole memberRole) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.mobileNumber = mobileNumber;
+        this.memberStatus = memberStatus;
+        this.memberRole = memberRole;
     }
 }

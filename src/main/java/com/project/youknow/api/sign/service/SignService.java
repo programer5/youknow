@@ -6,6 +6,7 @@ import com.project.youknow.api.member.entitiy.Member;
 import com.project.youknow.api.sign.dto.JoinDto;
 import com.project.youknow.api.sign.dto.LoginDto;
 import com.project.youknow.exception.custom.DuplicatedException;
+import com.project.youknow.exception.custom.ForbiddenException;
 import com.project.youknow.util.validation.Empty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -47,7 +48,7 @@ public class SignService {
                 .orElseThrow(() -> new UsernameNotFoundException("Member Not Found"));
 
         if (!passwordEncoder.matches(loginEntity.getPassword(), member.getPassword())) {
-            throw new IllegalArgumentException("Password do not match");
+            throw new ForbiddenException("Password do not match");
         }
 
         return new AuthenticationDto().toDto(member);
