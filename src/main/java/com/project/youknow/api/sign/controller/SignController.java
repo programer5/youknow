@@ -17,18 +17,18 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = {""}, produces = MediaType.APPLICATION_JSON_VALUE)
 public class SignController {
 
     private final SignService signService;
     private final JwtAuthProvider jwtAuthProvider;
 
-    @PostMapping("/signup")
+    @PostMapping(value = {"/signup"})
     public ResponseEntity<Boolean> join(@Valid @RequestBody JoinDto joinDto) {
         return ResponseEntity.ok().body(signService.join(joinDto));
     }
 
-    @PostMapping("/signin")
+    @PostMapping(value = {"/signin"})
     public ResponseEntity<AuthenticationDto> authorize(@Valid @RequestBody LoginDto loginDto) {
 
         AuthenticationDto authentication = signService.login(loginDto);
