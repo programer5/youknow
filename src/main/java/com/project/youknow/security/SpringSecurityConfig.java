@@ -38,7 +38,7 @@ public class SpringSecurityConfig {
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setMaxAge(3600L);
-        configuration.setAllowCredentials(false);
+        configuration.setAllowCredentials(true);
         configuration.addExposedHeader("accessToken");
         configuration.addExposedHeader("content-disposition");
 
