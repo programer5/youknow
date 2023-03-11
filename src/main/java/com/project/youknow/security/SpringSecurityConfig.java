@@ -38,7 +38,7 @@ public class SpringSecurityConfig {
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setMaxAge(3600L);
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(false);
         configuration.addExposedHeader("accessToken");
         configuration.addExposedHeader("content-disposition");
 
@@ -50,7 +50,12 @@ public class SpringSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web -> web.ignoring().antMatchers("/favicon.ico"));
+        return (web -> web.ignoring().antMatchers("/favicon.ico")
+                .antMatchers(
+                        "/static/css/**",
+                "/static/js/**",
+                "/static/img/**",
+                "/static/**"));
     }
 
     @Bean
