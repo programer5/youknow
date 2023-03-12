@@ -2,31 +2,44 @@ package com.project.youknow.security;
 
 import com.project.youknow.api.member.enumType.MemberRole;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@SuppressWarnings("serial")
+@Getter
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
     private Long id;
     private String email;
     private String password;
-    private MemberRole memberRole;
+    private List<String> roles = new ArrayList<>();
 
-    public CustomUserDetails(Long id, String email) {
+    public CustomUserDetails(Long id, String email, String role) {
         this.id = id;
         this.email = email;
+
+        ArrayList<String> roleList = new ArrayList<>();
+        roleList.add("ROLE_" + role);
+
+        this.roles = roleList;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<GrantedAuthority> collection = new ArrayList<>();
-        collection.add(new SimpleGrantedAuthority(memberRole.getCode()));
-        return collection;
+
+        List<SimpleGrantedAuthority> roles = this.roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+
+        return roles;
     }
 
     @Override

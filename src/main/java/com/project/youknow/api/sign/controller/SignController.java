@@ -1,5 +1,6 @@
 package com.project.youknow.api.sign.controller;
 
+import com.project.youknow.api.member.enumType.MemberRole;
 import com.project.youknow.api.sign.dto.JoinDto;
 import com.project.youknow.api.sign.dto.LoginDto;
 import com.project.youknow.api.sign.service.SignService;
@@ -34,7 +35,7 @@ public class SignController {
         AuthenticationDto authentication = signService.login(loginDto);
 
         return ResponseEntity.ok().header("accesstoken",
-                jwtAuthProvider.createToken(authentication.getId(), authentication.getEmail()))
+                jwtAuthProvider.createToken(authentication.getId(), authentication.getEmail(), MemberRole.MEMBER.getCode()))
                 .body(authentication);
     }
 }

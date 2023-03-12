@@ -27,4 +27,4 @@ logging:
 
 jwt:
   secret:
-    signature: "youknow"
+    signatureKey: "youknowProject-secretKey-signatureKey"

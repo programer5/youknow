@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -17,41 +18,43 @@ import java.util.Date;
 @Component
 public class JwtAuthProvider {
 
-    @Value("${jwt.secret.signature}")
-    private String atSecretKey;
+    private static final String BEARER_TYPE = "bearer ";
+    private static final String AUTHORITIES_KEY = "auth";
+    private static final String ACCESS_USER_ID = "id";
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 12;
+
+    @Value("${jwt.secret.signatureKey}")
+    private String signatureKey;
 
     @PostConstruct
     protected void init() {
-        atSecretKey = Base64.getEncoder().encodeToString(atSecretKey.getBytes());
+        signatureKey = Base64.getEncoder().encodeToString(signatureKey.getBytes());
     }
+
+    private final UserDetailsService userDetailsService;
 
     /**
      * @throws Exception
      * @method 설명: jwt 토큰 발급
      */
-    public String createToken(long memberId, String email) {
-        /**
-         * 토큰 발급을 위한 데이터는 UserDetails에서 담당
-         * 따라서 UserDetails를 세부 구현한 CustomUserDetails로 회원정보 전달
-         */
-        CustomUserDetails user = new CustomUserDetails(memberId, email);
+    public String createToken(long memberId, String email, String role) {
 
-        // 유효기간 설정을 위한 Date 객체 선언
-        Date date = new Date();
+        long now = (new Date()).getTime();
+        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+
         final JwtBuilder builder = Jwts.builder()
-                .setHeaderParam("typ", "JWT")
-                .setSubject("accesstoken").setExpiration(new Date(date.getTime() * (1000L * 60 * 60 * 12)))
-                .claim("memberId", memberId)
-                .claim("email", email)
-                .claim("roles", user.getAuthorities())
-                .signWith(SignatureAlgorithm.HS256, atSecretKey);
+                .setSubject(email)
+                .setExpiration(accessTokenExpiresIn)
+                .claim(AUTHORITIES_KEY, role)
+                .claim(ACCESS_USER_ID, memberId)
+                .signWith(SignatureAlgorithm.HS256, signatureKey);
 
-        return builder.compact();
+        return BEARER_TYPE + builder.compact();
     }
 
     // 토큰에서 회원 정보 추출
     public String getMemberPK(String token) {
-        return Jwts.parserBuilder().setSigningKey(atSecretKey).build().parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().setSigningKey(signatureKey).build().parseClaimsJws(token).getBody().getSubject();
     }
 
     /**
@@ -62,12 +65,13 @@ public class JwtAuthProvider {
     public Authentication getAuthentication(String token) {
 
         // 토큰 기반으로 유저의 정보 파싱
-        Claims claims = Jwts.parserBuilder().setSigningKey(atSecretKey).build().parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parserBuilder().setSigningKey(signatureKey).build().parseClaimsJws(token).getBody();
 
-        long memberId = claims.get("memberId", Integer.class);
-        String email = claims.get("email", String.class);
+        String email = claims.getSubject();
+        Long memberId = claims.get(ACCESS_USER_ID, Long.class);
+        String role = claims.get(AUTHORITIES_KEY, String.class);
 
-        CustomUserDetails userDetails = new CustomUserDetails(memberId, email);
+        CustomUserDetails userDetails = new CustomUserDetails(memberId, email, role);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -75,7 +79,11 @@ public class JwtAuthProvider {
      * @method 설명: request객체 헤더에 담겨 있는 토큰 가져오기
      */
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("accesstoken");
+        if (request.getHeader("accesstoken") == null) {
+            return null;
+        }
+
+        return request.getHeader("accesstoken").replace(BEARER_TYPE, "");
     }
 
     /**
@@ -83,7 +91,7 @@ public class JwtAuthProvider {
      */
     public boolean validateToken(String token) {
         try {
-            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(atSecretKey).build().parseClaimsJws(token);
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(signatureKey).build().parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
             return false;
